@@ -46,10 +46,10 @@ func main() {
 	}
 
 	var (
-		d time.Time
+		sysTimeStamp time.Time
 	)
 	db := connectToOracle()
-	rows, err := db.Query("SELECT SYSTIMESTAMP AS D FROM DUAL")
+	rows, err := db.Query("SELECT SYSTIMESTAMP FROM DUAL")
 	if err != nil {
 		log.Panicln("error in query: ", err)
 		return
@@ -57,9 +57,9 @@ func main() {
 	defer rows.Close()
 	for rows.Next() {
 
-		rows.Scan(&d)
+		rows.Scan(&sysTimeStamp)
 
-		fmt.Printf("d=%v\n", d.Month())
+		fmt.Printf("DB SERVER TIME=%s", sysTimeStamp)
 	}
 	err = rows.Err()
 	if err != nil {
